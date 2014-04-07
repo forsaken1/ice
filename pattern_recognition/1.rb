@@ -1,8 +1,8 @@
 srand
 iter = 0
-max_digit = 99
+max_digit = 36
 operations_count = 10000
-player_table = Array.new(max_digit) { |i| i = rand(max_digit) }.uniq[0..35]
+player_table = Array.new(max_digit * 2) { |i| i = rand(max_digit) }.uniq[0..35]
 result = Array.new(3) { |i| i = 0 }
 
 while iter <= operations_count do
@@ -14,4 +14,4 @@ while iter <= operations_count do
   result[2] += 1 if (player_choise & selected).size == 3
 end
 
-puts result.map { |item| item = (Float(item) / operations_count * 100).to_s + ' %' }
+puts result.map { |item| item = (Float(item) / operations_count) }
