@@ -10,9 +10,7 @@ def get_text(tw)
 end
 
 def insert_text(text_out, text)
-  mark = text_out.buffer.selection_bound
-  iter = text_out.buffer.get_iter_at_mark(mark)
-  text_out.buffer.insert(iter, text)
+  text_out.buffer.text = (text)
 end
 
 def init(title)

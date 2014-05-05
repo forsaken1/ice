@@ -1,19 +1,25 @@
 require '../lib/lib.rb'
 
 def encode(data)
-  prev = result = ''
-  counter = 1
+  encode_str = ''
+  i = 0
 
-  data.each_char do |e|
-    if e == prev
-      counter += 1
-    else
-      result += counter.to_s + prev if prev != ''
-      counter = 1
+  while i < data.length
+    smb = data[i]
+    cnt = 1
+    j = i
+    while j < data.length
+      if data[j + 1] != smb.to_s
+        break
+      end
+      cnt += 1
+      i += 1
+      j += 1
     end
-    prev = e
+    encode_str += cnt.to_s + smb.to_s
+    i += 1
   end
-  result
+  encode_str
 end
 
 init("Run-length encoding") { |text| encode(text) }
