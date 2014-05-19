@@ -1,5 +1,19 @@
 require 'gtk2'
 
+def execute(a, sign, b)
+  if sign == '+'
+    a + b
+  elsif sign == '-'
+    a - b
+  elsif sign == '*'
+    a * b
+  elsif sign == '/'
+    a / b
+  else
+    a ** b
+  end
+end
+
 def parse_str(str, ret = false)
   dec = ['+', '-', '*', '/', '^', ')']
   level = 0
@@ -26,7 +40,7 @@ def parse_str(str, ret = false)
       i = j - 1
       ts << ns.to_i
     else
-      return 'unexpected sym'
+      return 'Unexpected symbol'
     end
     lvls << level
     i += 1
