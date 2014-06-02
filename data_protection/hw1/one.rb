@@ -1,5 +1,5 @@
 require '../lib/lib.rb'
-#require '../lib/gtk.rb'
+require '../lib/gtk.rb'
 
 def encode(data)
   encode_str = ''
@@ -68,4 +68,4 @@ test_case do
   errors += test('ntvwwwrrr', '-3ntv3w3r') { |str| encode(str) }
 end
 
-#init("Run-length encoding") { |text| encode(text) }
+init("Run-length encoding") { |text| encode(text) }
