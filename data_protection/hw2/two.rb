@@ -1,6 +1,7 @@
 require '../lib/lib.rb'
+require '../lib/gtk.rb'
 
-INF  = 1e6
+INF = 1e6
 
 def sign_code(char)
   case char 
