@@ -1,5 +1,5 @@
 def test_case
-  print 'tests: '
+  print 'Tests: '
   errors = yield
   print "\n"
   print errors
