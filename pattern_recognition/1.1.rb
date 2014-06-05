@@ -3,6 +3,10 @@ max_digit = 36
 operations_count = ARGV.first.to_i
 
 [100, 1_000, 10_000, 100_000, 1_000_000].each do |i|
+  unless operations_count == 0
+    break if i > operations_count
+  end
+
   iter = 0
   player_table = Array.new(36) { |it| it + 1 }
   selected = Array.new(100) { |it| rand(player_table.size) }.uniq[0..4]
