@@ -20,6 +20,6 @@ operations_count = ARGV.first.to_i
     iter += 1
   end
   puts "#{i}:"
-  puts result.map { |item| "#{Float(item) / i * 100}%" }
+  puts result.map { |item| "#{Float(item) / i * 100}%, #{Float(item) / i}" }
   puts "\n"
 end
