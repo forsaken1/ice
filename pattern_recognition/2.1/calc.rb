@@ -1,23 +1,24 @@
-def fact(n)
-  result = Float(1)
-  (1..n).each { |i| result *= i }
-  result
-end
+require './lib.rb'
 
-def combination(m, n) # сочетания из n по m
-  fact(n) / ( fact(m) * fact(n - m) )
-end
-
-def calc(_m, _n, m, n)
-  ( combination(m, _m) * combination(n - m, _n - _m) ) / combination(n, _n)
-end
-
-arr = []
+x = Array.new(21) { |i| i += 1; i - 1 }
+p_i = [] # массив вероятностей для случайной величины x, x = 0..20
 i = 0
 while i <= 20
-  arr << calc(20, 100, i, 20)
-  p "p(#{i}) = " + arr.last.to_s
+  p_i << calc(20, 100, i, 20)
+  #p "p(#{i}) = " + p_i.last.to_s
   i += 1
 end
 
-p "sum p_i = " + arr.inject(0) { |sum, x| sum + x }.to_s
+sum = [] # массив значений функции распределения
+i = 0
+while i <= 20
+  sum << p_i[0..i].inject(0) { |sum, x| sum + x }
+  #p "sum p_i = " + sum.last.to_s
+  i += 1
+end
+
+check_p = p_i.inject(0) { |sum, x| sum + x } # проверка, что суммы всех вероятностей == 1
+
+p check_p
+#p math_expectation(x, p_i)
+#p disp(x, p_i)
