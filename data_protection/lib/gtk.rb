@@ -14,6 +14,8 @@ def insert_text(text_out, text)
 end
 
 def init(title)
+  history = []
+  current_history_item = 0
   window = Gtk::Window.new
   window.set_title(title)
   window.border_width = 10
@@ -23,10 +25,26 @@ def init(title)
   text_in = Gtk::TextView.new
   text_out = Gtk::TextView.new
 
+  text_in.signal_connect('key-press-event') do |o, event|
+    case event.keyval
+      when Gdk::Keyval::GDK_KEY_Up
+        insert_text(text_in, history[current_history_item]) unless history[current_history_item].nil?
+        current_history_item -= 1 if current_history_item > 0
+      when Gdk::Keyval::GDK_KEY_Down
+        current_history_item += 1 if current_history_item < history.count - 1
+        insert_text(text_in, history[current_history_item]) unless history[current_history_item].nil?
+      when Gdk::Keyval::GDK_KEY_Return
+        p 'enter'
+    end
+  end
+
   button = Gtk::Button.new("Run")
   button.signal_connect("clicked") do
     text = get_text(text_in)
+    history << text
+    current_history_item = history.count - 1
     insert_text(text_out, yield(text))
+    insert_text(text_in, '')
   end
 
   hbox = Gtk::HBox.new(false, 5)
