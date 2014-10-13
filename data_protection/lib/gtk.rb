@@ -23,7 +23,7 @@ def init(title)
   text_in = Gtk::TextView.new
   text_out = Gtk::TextView.new
 
-  button = Gtk::Button.new("Encode")
+  button = Gtk::Button.new("Run")
   button.signal_connect("clicked") do
     text = get_text(text_in)
     insert_text(text_out, yield(text))
