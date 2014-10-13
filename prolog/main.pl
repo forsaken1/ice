@@ -1,10 +1,5 @@
-factorial(1, 1).
-factorial(X, Result) :-
-    X > 0,
-    X1 is X - 1,
-    factorial(X1, Result1),
-    Result is X * Result1.
-
-main :-
-    factorial(7, X),
-    writeln(X).
+make_date(Y,M,D,date(Y,M,D)).
+date(1993,02,22).
+    get_year(date(Y,_,_),Y). 
+    get_month(date(_,M,_),M). 
+    get_day(date(_,_,D),D). 
