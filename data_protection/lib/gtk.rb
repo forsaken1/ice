@@ -16,6 +16,7 @@ end
 def init(title)
   history = []
   current_history_item = 0
+
   window = Gtk::Window.new
   window.set_title(title)
   window.border_width = 10
@@ -24,6 +25,14 @@ def init(title)
 
   text_in = Gtk::TextView.new
   text_out = Gtk::TextView.new
+
+  main_process = Proc.new do
+    text = get_text(text_in)
+    history << text
+    current_history_item = history.count - 1
+    insert_text(text_out, yield(text))
+    insert_text(text_in, '')
+  end
 
   text_in.signal_connect('key-press-event') do |o, event|
     case event.keyval
@@ -34,17 +43,13 @@ def init(title)
         current_history_item += 1 if current_history_item < history.count - 1
         insert_text(text_in, history[current_history_item]) unless history[current_history_item].nil?
       when Gdk::Keyval::GDK_KEY_Return
-        p 'enter'
+        main_process.call
     end
   end
 
   button = Gtk::Button.new("Run")
   button.signal_connect("clicked") do
-    text = get_text(text_in)
-    history << text
-    current_history_item = history.count - 1
-    insert_text(text_out, yield(text))
-    insert_text(text_in, '')
+    main_process.call
   end
 
   hbox = Gtk::HBox.new(false, 5)
