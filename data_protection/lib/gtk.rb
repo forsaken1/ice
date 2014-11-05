@@ -28,7 +28,8 @@ def init(title)
 
   main_process = Proc.new do
     text = get_text(text_in)
-    history << text
+    history[history.count == 0 ? 0 : history.count - 1] = text
+    history << ''
     current_history_item = history.count - 1
     insert_text(text_out, yield(text))
     insert_text(text_in, '')

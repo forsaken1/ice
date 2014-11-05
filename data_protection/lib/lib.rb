@@ -11,6 +11,7 @@ def test(question, answer)
     ''
   else
     print '-'
+    p res
     "Error: #{question} != #{answer}, but: #{res}\n"
   end
 end
