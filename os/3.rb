@@ -33,7 +33,7 @@ def execute text
       text.gsub(/ *mkdir *([\w]+) */) { Dir.mkdir $1 unless Dir.exists? $1 }
       "Directory created: #{$1}"
     when /^ *rmdir *[\w]+ *$/
-      text.gsub(/ *rmdir *([\w]+) */) { Dir.rmdir_rec $1 if Dir.exists? $1 }
+      text.gsub(/ *rmdir *([\w]+) */) { Dir.rmdir $1 if Dir.exists? $1 }
       "Directory removed: #{$1}"
     when /^ *set *[\w_]+ *= *[\d]+ *$/
       text.gsub(/^ *set *([\w_]+) *= *([\d]+) *$/) { $sym_table[$1] = $2 }
@@ -69,6 +69,7 @@ if ARGV.first == '-t'
     errors += test('cd test_dir', "Directory changed: /home/forsaken/test_dir\n") { |text| shell text }
     errors += test('mkdir test', "Directory created: test\n") { |text| shell text }
     errors += test('ls', "..   .   test\n") { |text| shell text }
+    errors += test('rmdir test', "Directory removed: test\n") { |text| shell text }
     errors += test('cd', "Directory changed: /home/forsaken\n") { |text| shell text }
     errors += test('rmdir test_dir', "Directory removed: test_dir\n") { |text| shell text }
     errors += test('set a = 42', "a = 42\n") { |text| shell text }
