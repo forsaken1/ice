@@ -202,10 +202,12 @@ def execute text, text_out = nil
       end
     # if
     when t_if
-      text.gsub(t_if) {  } # todo
+      text.gsub(t_if) { if $sym_table[$1].to_i != 0 then shell($2, text_out) end }
     # loop
     when t_loop
-      text.gsub(t_loop) {  } # todo
+      result = ''
+      text.gsub(t_loop) { $sym_table[$1].to_i.times { result += shell($2, text_out) } }
+      result
     # help
     when t_help
       get_help
