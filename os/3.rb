@@ -70,6 +70,10 @@ def t_loop
   /^ *loop *([\w_]+) *do (.*) end *$/
 end
 
+def t_execute
+  /^ *execute *([\w_.\/]+) *$/
+end
+
 def t_new
   /^ *new *([\w_.\/]+) *$/
 end
@@ -99,6 +103,7 @@ def get_help
   mkdir <path>
   rmdir <path>
   --
+  execute <path>
   new <path>
   open <path>
   rm <path>
@@ -240,6 +245,9 @@ if ARGV.first == '-t'
     errors += test('set a = "awesome"', "a = awesome\n") { |text| shell text }
     errors += test('echo a', "awesome\n") { |text| shell text }
     errors += test('"foo{a}bar"', "fooawesomebar\n") { |text| shell text }
+    errors += test('set a = 3|loop a do echo a end', "a = 3\n3\n3\n3\n\n") { |text| shell text }
+    errors += test('set a = 1|if a do echo a end', "a = 1\n1\n\n") { |text| shell text }
+    errors += test('set a = 0|if a do echo a end', "a = 0\n\n") { |text| shell text }
   end
 else
   init('EmulateShell') { |text, out| shell text, out }
