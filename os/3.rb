@@ -156,6 +156,15 @@ def execute text, text_out = nil
     # interpolation
     when t_interpolation
       text.gsub(t_interpolation) { $1 + $sym_table[$2] + $3 }
+    # execute
+    when t_execute
+      text.gsub(t_execute) do
+        if File.exists? $1
+          shell File.open($1).read, text_out
+        else
+          "File not found"
+        end
+      end
     # new
     when t_new
       text.gsub(t_new) do
@@ -192,7 +201,7 @@ def execute text, text_out = nil
     # save
     when t_save
       unless $filename.nil?
-        File.open($filename, "w+") { |f| f.write(get_text(text_out)) }
+        File.open($filename, "w+") { |f| f.write(get_text(text_out)) if text_out }
         "File saved"
       else
         "File not opened"
