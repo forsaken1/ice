@@ -3,7 +3,7 @@ require 'gtk2'
 def get_text(tw)
   start_iter, end_iter, selected  = tw.buffer.selection_bounds
 
-  if !selected
+  unless selected
     start_iter, end_iter = tw.buffer.bounds
   end
   tw.buffer.get_text(start_iter, end_iter)
@@ -21,7 +21,7 @@ def init(title)
   window.set_title(title)
   window.border_width = 10
   window.resizable = true
-  window.set_size_request(600, 300)
+  window.set_size_request(900, 600)
 
   text_in = Gtk::TextView.new
   text_out = Gtk::TextView.new
@@ -31,7 +31,7 @@ def init(title)
     history[history.count == 0 ? 0 : history.count - 1] = text
     history << ''
     current_history_item = history.count - 1
-    insert_text(text_out, yield(text))
+    insert_text(text_out, yield(text, text_out))
     insert_text(text_in, '')
   end
 

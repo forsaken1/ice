@@ -46,29 +46,75 @@ def t_set_integer
 end
 
 def t_set_string
-  /^ *set *([\w_]+) *= *["']{1}([\w_]+)['"]{1} *$/
+  /^ *set *([\w_]+) *= *["]{1}([\w_]+)["]{1} *$/
 end
 
 def t_echo
-  /^ *echo *([\w_])+ *$/
+  /^ *echo *([\w_]+) *$/
 end
 
 def t_interpolation
-  /^ *["']{1}([\w_]*)\{([\w_]+)\}([\w_]*)['"]{1} *$/
+  /^ *["]{1}([\w_]*)\{([\w_]+)\}([\w_]*)["]{1} *$/
 end
 
 def t_help
   /^ *help *$/
 end
 
+def t_if
+  /^ *if *([\w_]+) *do (.*) end *$/
+end
+
+def t_loop
+  /^ *loop *([\w_]+) *do (.*) end *$/
+end
+
+def t_new
+  /^ *new *([\w_.\/]+) *$/
+end
+
+def t_open
+  /^ *open *([\w_.\/]+) *$/
+end
+
+def t_rm
+  /^ *rm *([\w.\/]+) *$/
+end
+
+def t_save
+  /^ *save *$/
+end
+
+def t_close
+  /^ *close *$/
+end
+
 def get_help
   <<-HELP
-  Available commands: pwd, ls, cd <name dir>, mkdir <name dir>, rmdir <name dir>,
-  echo <var>, set <var> = <integer>, set <var> = "<string>"
+  Available commands:
+  pwd
+  ls
+  cd <path>
+  mkdir <path>
+  rmdir <path>
+  --
+  new <path>
+  open <path>
+  rm <path>
+  save
+  close
+  --
+  echo <variable>
+  set <variable> = <integer>
+  set <variable> = "<string>"
+  "<string>$<variable><string>"
+  --
+  if <variable> do <block> end
+  loop <variable> do <block> end
   HELP
 end
 
-def execute text
+def execute text, text_out = nil
   case text
     # pwd
     when t_pwd
@@ -100,10 +146,31 @@ def execute text
       "#{$1} = #{$2}"
     # echo
     when t_echo
-      text.gsub(t_echo) { $sym_table[$1] }
+      text.gsub(t_echo) { $sym_table[$1].nil? ? $1 : $sym_table[$1] }
     # interpolation
     when t_interpolation
       text.gsub(t_interpolation) { $1 + $sym_table[$2] + $3 }
+    # new
+    when t_new
+      text.gsub(t_new) {  } # todo
+    # open
+    when t_open
+      text.gsub(t_open) {  } # todo
+    # rm
+    when t_rm
+      text.gsub(t_rm) {  } # todo
+    # save
+    when t_save
+      text.gsub(t_save) {  } # todo
+    # close
+    when t_close
+      text.gsub(t_close) {  } # todo
+    # if
+    when t_if
+      text.gsub(t_if) {  } # todo
+    # loop
+    when t_loop
+      text.gsub(t_loop) {  } # todo
     # help
     when t_help
       get_help
@@ -112,10 +179,10 @@ def execute text
   end
 end
 
-def shell text
+def shell text, text_out = nil
   output = ''
   operations = text.split '|'
-  operations.each { |operation| output += "#{execute(operation)}\n" }
+  operations.each { |operation| output += "#{execute(operation, text_out)}\n" }
   output
 end
 
