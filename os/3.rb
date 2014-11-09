@@ -2,6 +2,7 @@ require '../data_protection/lib/gtk.rb'
 require '../data_protection/lib/lib.rb'
 
 $sym_table = {}
+$filename = nil
 
 class Dir
   def self.rmdir_rec path
@@ -152,19 +153,53 @@ def execute text, text_out = nil
       text.gsub(t_interpolation) { $1 + $sym_table[$2] + $3 }
     # new
     when t_new
-      text.gsub(t_new) {  } # todo
+      text.gsub(t_new) do
+        if File.exists? $1
+          "File exists"
+        else
+          File.open($1, "w+") do |f|
+            f.write ''
+            f.close
+          end
+          "File created"
+        end
+      end
     # open
     when t_open
-      text.gsub(t_open) {  } # todo
+      text.gsub(t_open) do
+        if File.exists? $1
+          $filename = $1
+          File.open($filename).read
+        else
+          "File not found"
+        end
+      end
     # rm
     when t_rm
-      text.gsub(t_rm) {  } # todo
+      text.gsub(t_rm) do
+        if File.exists? $1
+          File.unlink $1
+          "File deleted"
+        else
+          "File not found"
+        end
+      end
     # save
     when t_save
-      text.gsub(t_save) {  } # todo
+      unless $filename.nil?
+        File.open($filename, "w+") { |f| f.write(get_text(text_out)) }
+        "File saved"
+      else
+        "File not opened"
+      end
     # close
     when t_close
-      text.gsub(t_close) {  } # todo
+      unless $filename.nil?
+        $filename = nil
+        "File closed"
+      else
+        "File not opened"
+      end
     # if
     when t_if
       text.gsub(t_if) {  } # todo
@@ -205,5 +240,5 @@ if ARGV.first == '-t'
     errors += test('"foo{a}bar"', "fooawesomebar\n") { |text| shell text }
   end
 else
-  init('EmulateShell') { |text| shell text }
+  init('EmulateShell') { |text, out| shell text, out }
 end
