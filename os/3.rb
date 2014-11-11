@@ -94,6 +94,10 @@ def t_close
   /^ *close *$/
 end
 
+def t_operation
+  /^ *([\w_]+) *(\+|\-|\*|\\) *([\w_]+) *$/
+end
+
 def get_help
   <<-HELP
   Available commands:
@@ -117,7 +121,27 @@ def get_help
   --
   if <variable> do <block> end
   loop <variable> do <block> end
+  --
+  <variable> + <variable>
+  <variable> - <variable>
+  <variable> * <variable>
+  <variable> / <variable>
   HELP
+end
+
+def operation a, b, oper
+  case oper
+    when '+'
+      a + b
+    when '-'
+      a - b
+    when '*'
+      a * b
+    when '/'
+      a / b
+    else
+      "Incorrect operation"
+  end
 end
 
 def execute text, text_out = nil
@@ -222,6 +246,9 @@ def execute text, text_out = nil
       result = ''
       text.gsub(t_loop) { $sym_table[$1].to_i.times { result += shell($2, text_out) } }
       result
+    # operation
+    when t_operation
+      text.gsub(t_operation) { operation($sym_table[$1].to_i, $sym_table[$3].to_i, $2)  }
     # help
     when t_help
       get_help
@@ -257,6 +284,11 @@ if ARGV.first == '-t'
     errors += test('set a = 3|loop a do echo a end', "a = 3\n3\n3\n3\n\n") { |text| shell text }
     errors += test('set a = 1|if a do echo a end', "a = 1\n1\n\n") { |text| shell text }
     errors += test('set a = 0|if a do echo a end', "a = 0\n\n") { |text| shell text }
+    errors += test('set a = 9|set b = 3', "a = 3\na = 4\n\n") { |text| shell text }
+    errors += test('a + b', "12\n") { |text| shell text }
+    errors += test('a - b', "6\n") { |text| shell text }
+    errors += test('a * b', "27\n") { |text| shell text }
+    errors += test('a / b', "3\n") { |text| shell text }
   end
 else
   init('EmulateShell') { |text, out| shell text, out }
