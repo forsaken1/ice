@@ -31,7 +31,7 @@ def t_cd_null
 end
 
 def t_cd
-  / *cd *([\w.]+) */
+  / *cd *([\w.~\/]+) */
 end
 
 def t_mkdir
