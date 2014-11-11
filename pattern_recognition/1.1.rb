@@ -1,3 +1,4 @@
+# experiments count
 srand
 max_digit = 36
 times = ARGV.first.nil? ? [100, 1_000, 10_000, 100_000, 1_000_000] : [ARGV.first.to_i]
