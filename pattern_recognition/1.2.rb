@@ -1,24 +1,27 @@
+# experiments count, length
 srand
+$a = Float(1)
+width = 2 * $a
+$l = ARGV.size == 2 ? ARGV.last.to_f : rand($a/2...width)
+times = ARGV.first.nil? ? [100, 1_000, 10_000, 100_000, 1_000_000] : [ARGV.first.to_i]
+p_a = (2 * $l) / ($a * Math::PI)
 
 def experiment
-  x = rand(0..a)
+  x = rand(0..$a)
   fi = rand(0..Math::PI)
-
-  (x <= l * Math.sin(fi)) ? 1 : 0 # x <= l sin(fi)
+  (x <= $l * Math.sin(fi)) ? 1 : 0 # x <= l sin(fi)
 end
 
-success_count = 0
-operations_count = ARGV.first.to_i
-a = 1
-width = 2 * a
-l = rand(a/2...width)
+puts "Width = 2; l = #{$l}; P(A) = #{Float(p_a)}\n"
 
-[1_000_000].each do |i|
-  unless operations_count == 0
-    break if i > operations_count
-  end
-
-  success_count += experiment()
+times.each do |i|
+	success_experiments_count = 0
+	iter = 0
+	while iter <= i
+		success_experiments_count += experiment
+		iter += 1
+	end
+  puts "Experiments count: #{i}\n"
+  puts "Experimental P(A) = #{Float(success_experiments_count) / Float(i)}"
+  puts "\n"
 end
-
-p "Success: #{success_count} of #{operations_count}"
