@@ -15,7 +15,7 @@ static void *second_thread_func(void *i)
 	{
 		if(!pthread_create(&thread, NULL, third_thread_func, i))
 		{
-			printf("Error: thread not created\n");
+			//printf("Error: thread not created\n");
 		}
 	}
 	else
@@ -34,7 +34,7 @@ static void *first_thread_func()
 	{
 		if(!pthread_create(&thread, NULL, second_thread_func, (void *)i))
 		{
-			printf("Error: thread not created\n");
+			//printf("Error: thread not created\n");
 		}
 	}
 	pthread_exit(NULL);
@@ -46,7 +46,7 @@ int main()
 
 	if(!pthread_create(&thread, NULL, first_thread_func, NULL))
 	{
-		printf("Error: thread not created\n");
+		//printf("Error: thread not created\n");
 	}
 	pthread_exit(NULL);
 }
