@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <pthread.h>
 
-int iter = 0;
+int even = 2, odd = 1;
+void *status_one, *status_two;
 
 static void *third_thread_func()
 {
+	printf("Thread three: %d\n", even);
 	pthread_exit(NULL);
 }
 
@@ -12,11 +14,10 @@ static void *second_thread_func()
 {
 	pthread_t thread;
 
-	if(pthread_create(&thread, NULL, third_thread_func, NULL))
-	{
-		pthread_join(thread, NULL);
-		iter++;
-	}
+	printf("Thread two: %d\n", odd);
+
+	pthread_create(&thread, NULL, third_thread_func, NULL);
+	pthread_join(thread, &status_two);
 	pthread_exit(NULL);
 }
 
@@ -24,13 +25,12 @@ static void *first_thread_func()
 {
 	pthread_t thread;
 
-	while(iter <= 100)
+	while(even < 102 && odd < 101)
 	{
-		if(pthread_create(&thread, NULL, second_thread_func, NULL))
-		{
-			pthread_join(thread, NULL);
-			iter++;
-		}
+		pthread_create(&thread, NULL, second_thread_func, NULL);
+		pthread_join(thread, &status_one);
+		even += 2;
+		odd += 2;
 	}
 	pthread_exit(NULL);
 }
