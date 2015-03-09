@@ -1,2 +1,2 @@
-g++ main.cpp -o out -fopenmp
-./out $1 $2
+g++ main.cpp -o a.out -fopenmp
+./a.out $1 $2

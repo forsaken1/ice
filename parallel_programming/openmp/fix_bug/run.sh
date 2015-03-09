@@ -1,2 +1,2 @@
-gcc text.c -o out -fopenmp
-./out 1 1
+gcc text.c -o a.out -fopenmp
+./a.out $1 $2
