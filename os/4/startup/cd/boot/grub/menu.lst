@@ -1,0 +1,6 @@
+default 0
+timeout=0
+title hello
+root (cd)
+kernel /boot/hello.elf
+boot
