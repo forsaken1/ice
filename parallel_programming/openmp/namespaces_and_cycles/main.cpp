@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     // shared
     if(shared_mode)
     {
-        #pragma omp parallel if(shared_mode) num_threads(thread_count) shared(a)
+        #pragma omp parallel num_threads(thread_count) shared(a)
         {
             printf("В потоке %d a = %d\n", omp_get_thread_num(), a += 2);
         }

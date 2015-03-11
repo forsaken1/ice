@@ -1,5 +1,6 @@
 #!/bin/bash
 # Переименование файлов
+# переписать
 
 directory=${1-"."}
 
@@ -12,10 +13,12 @@ do
 
 	if [ $year_idx -eq 0 ]; then continue; fi;
 
-	prefix=$(expr substr $file 1 $(($year_idx-1)) | tr 'a-z' 'A-Z')
+	prefix=$(expr substr $file 1 $(($year_idx-1)))
+
 	year=$(expr substr $file $year_idx 4)
-	year=${year#0}; year=${year#0}; year=${year#0}
+	year=${year#0};
 	year=$((($year+1)%10000))
+
 	other=$(expr substr $file $(($year_idx+4)) $(($len-$year_idx-4+1)))
 
 	new_file=$(printf "%s%04d%s" $prefix $year $other)

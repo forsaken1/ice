@@ -21,7 +21,7 @@ int main()
       if (i == j)
         MA[i][j] = 7.0;
       else
-        MA[i][j] = 8.0;
+        MA[i][j] = 1.0;
     }
     MA[i][M] = 1.0 * (M) + 1.0;
   }

@@ -288,8 +288,11 @@ if ARGV.first == '-t'
     errors += test('a + b', "12\n") { |text| shell text }
     errors += test('a - b', "6\n") { |text| shell text }
     errors += test('a * b', "27\n") { |text| shell text }
-    #errors += test('a / b', "3\n") { |text| shell text }
   end
 else
   init('EmulateShell') { |text, out| shell text, out }
 end
+
+# export ENV
+# фоновый режим
+# STDIN >> STDOUT
