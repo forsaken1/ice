@@ -14,12 +14,26 @@ void merge(int *a, int n, int m)
     free(x);
 }
  
-void merge_sort(int *a, int n)
+void merge_sort(int *a, int n, void (*s)(int*, int))
 {
-    if (n < 2)
-        return;
-    int m = n / 2;
-    merge_sort(a, m);
-    merge_sort(a + m, n - m);
-    merge(a, n, m);
+    if(n < 2) return;
+
+    if(n > K)
+    {
+        int m = n / 2;
+
+        #pragma omp parallel sections num_threads(2)
+        {
+            #pragma omp section
+            merge_sort(a, m, s);
+
+            #pragma omp section
+            merge_sort(a + m, n - m, s);
+        }
+        merge(a, n, m);
+    }
+    else
+    {
+        s(a, n);
+    }
 }
