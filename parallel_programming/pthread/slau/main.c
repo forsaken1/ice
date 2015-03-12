@@ -1,29 +1,34 @@
 #include <stdio.h>
 #include <sys/time.h>
+#include <pthread.h>
+#include <malloc.h>
 
-#define M 2
+#define M 3
+
+long j, k;
+
+double MAD, MA[M][M + 1] = { // -4.313, 32.875, -30.438
+    { 3.0, 4.0, 7.0, 10.0 },
+    { 6.0, 7.0, 8.0, 13.0 },
+    { 4.0, 5.0, 2.0, 34.0 },
+};
+
+static void *routine(void *param)
+{
+    long i = (long)param;
+
+    for (j = M; j >= k; j--)
+        MA[i][j] -= MA[i][k] * MA[k][j];
+
+    pthread_exit(NULL);
+}
 
 int main()
 {
-    int i, j, v, k;
-    double MAD, MA[][] = { { 3.0, 4.0 }, { 6.0, 7.0 } }
-
-    /* Переменные для замера времени решения */
+    long i;
+    pthread_t* thread = (pthread_t*) malloc(M * sizeof(pthread_t));
     struct timeval tv1, tv2;
-    long int dt1;
-
-    /* Генерация данных */
-    /*for (i = 0; i < M; i++)
-    {
-        for (j = 0; j < M; j++)
-        {
-            if (i == j)
-                MA[i][j] = 7.0;
-            else
-                MA[i][j] = 1.0;
-        }
-        MA[i][M] = 1.0 * (M) + 1.0;
-    }*/
+    float time_seconds;
 
     gettimeofday(&tv1, NULL);
 
@@ -33,28 +38,39 @@ int main()
         MAD = 1.0 / MA[k][k];
 
         for (j = M; j >= k; j--)
+        {
             MA[k][j] *= MAD;
+        }
 
         for (i = k + 1; i < M; i++)
-            for (j = M; j >= k; j--)
-                MA[i][j] -= MA[i][k] * MA[k][j];
+        {
+            pthread_create(&thread[i], NULL, routine, (void*)i);
+        }
+
+        for (i = k + 1; i < M; i++)
+        {
+            pthread_join(thread[i], NULL);
+        }
     }
 
     /* Обратный ход */
     for (k = M - 1; k >= 0; k--)
     {
         for (i = k - 1; i >= 0; i--)
+        {
             MA[i][M] -= MA[k][M] * MA[i][k];
+        }
     }
 
-    /* Засечение времени и печать */
     gettimeofday(&tv2, NULL);
-    dt1 = (tv2.tv_sec - tv1.tv_sec) * 1000000 + tv2.tv_usec - tv1.tv_usec;
-    printf("Time = %ld\n", dt1);
+    time_seconds = tv2.tv_sec - tv1.tv_sec + 0.000001 * (tv2.tv_usec - tv1.tv_usec);
+    printf("Time = %.8f\n", time_seconds);
 
-    /* Печать первых восьми корней */
-    printf(" %f %f\n", MA[0][M], MA[1][M]);//, MA[2][M], MA[3][M]);
-    //printf(" %f %f %f %f\n", MA[4][M], MA[5][M], MA[6][M], MA[7][M]);
+    for(i = 0; i < M; i++)
+    {
+        printf("%f   ", MA[i][M]);
+    }
+    printf("\n");
 
-    return (0);
+    return 0;
 }
