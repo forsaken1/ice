@@ -1,18 +1,26 @@
-GRUB
-http://habrahabr.ru/company/neobit/blog/173263/ здесь не получилось
-делал по http://sourceforge.net/p/oszur11/code/ci/master/tree/Chapter_01_Startup/01_Startup/
-Скачиваешь файлы, запускаешь скрипт -> получаешь hello.iso
-я его скопировал в /boot/,
-в файл /etc/grub.d/40_custom добавил строки
-menuentry "my OS, hello" {
-set isofile=(hd1,msdos1)"/boot/hello.iso"
-loopback loop $isofile
-set root=(loop)
-multiboot /boot/hello.elf
-boot
-}
-где (hd1,msdos1) - это диск и раздел с установленной ubuntu
-далее выполнил команды
-sudo grub-mkconfig -o /boot/grub/grub.cfg && sudo update-grub
-теперь можно перезагрузиться и посмотреть на результат
-надеюсь ничего не забыл)
+# Инсталляция SSHFS
+sudo apt-get install sshfs
+
+# Загрузка модуля
+sudo modprobe fuse
+
+# Настройка прав доступа
+sudo adduser username fuse
+sudo chown root:fuse /dev/fuse 
+
+# Подключение
+mkdir ~/remoteserver
+sshfs deployer@repa.su:/ ~/www/repa_su
+
+# Размонтировать
+umount ~/remoteserver
+
+
+######################
+
+cat /proc/mdstat
+fdisk -l
+mount
+cat /etc/fstab
+cat /etc/mtab
+cat /etc/mdadm/mdadm.conf
