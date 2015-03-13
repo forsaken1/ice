@@ -1,2 +1,2 @@
-g++ main.cpp -o a.out -lpthread
+gcc main.c -o a.out -lpthread
 ./a.out
