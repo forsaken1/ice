@@ -15,7 +15,7 @@ else
   p_i = get_p_i(x)
 end
 
-#puts p_i
+puts p_i
 p 'Мат. ожидание: ' + math_expectation(x, p_i).to_s
 p 'Дисперсия: ' + disp(x, p_i).to_s
 p 'Коэффициент ассиметрии: ' + coeff_asym(x, p_i).to_s

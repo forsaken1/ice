@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <malloc.h>
+//#include <>
 
 #define CONSUME_COUNT 2
 #define MANUFACTURE_COUNT 5
@@ -16,6 +17,7 @@ static void* manufacturer()
         printf("Manufacturer created: %d items; warehouse: %d\n", 
             MANUFACTURE_COUNT, warehouse += MANUFACTURE_COUNT);
         pthread_mutex_unlock(&mutex);
+        sleep(1);
     }
     pthread_exit(NULL);
 }
@@ -31,6 +33,7 @@ static void* consumer()
         else
             printf("Too small items!\n");
         pthread_mutex_unlock(&mutex);
+        sleep(1);
     }
     pthread_exit(NULL);
 }

@@ -1,4 +1,5 @@
 # experiments count, length
+# arguments: experiments count, length l
 srand
 $a = Float(1)
 width = 2 * $a

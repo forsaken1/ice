@@ -10,7 +10,8 @@ sudo chown root:fuse /dev/fuse
 
 # Подключение
 mkdir ~/remoteserver
-sshfs deployer@repa.su:/ ~/www/repa_su
+
+sshfs deployer@repa.su:/ ~/www/repa_su  # !!!!
 
 # Размонтировать
 umount ~/remoteserver

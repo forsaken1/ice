@@ -2,7 +2,6 @@
 #include <pthread.h>
 
 int even = 2, odd = 1;
-void *status_one, *status_two;
 
 static void *third_thread_func()
 {

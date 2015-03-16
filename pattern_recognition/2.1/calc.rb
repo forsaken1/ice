@@ -20,5 +20,5 @@ end
 check_p = p_i.inject(0) { |sum, x| sum + x } # проверка, что суммы всех вероятностей == 1
 
 p check_p
-#p math_expectation(x, p_i)
-#p disp(x, p_i)
+p math_expectation(x, p_i)
+p disp(x, p_i)
