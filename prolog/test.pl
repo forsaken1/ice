@@ -1,7 +1,7 @@
-solve(true, 0) :- !.
-solve(Head, Count) :- not(clause(Head, Body)), fail.
-solve((Goal1, Goal2), Count) :-!, solve(Goal1, Count), solve(Goal2, Count), Count is Count + 2.
-solve(Head, Count) :- clause(Head, Body), solve(Body, Count), Count is Count + 1.
+%solve(true, 0) :- !.
+%solve(Head, Count) :- not(clause(Head, Body)), fail.
+%solve((Goal1, Goal2), Count) :-!, solve(Goal1, Count), solve(Goal2, Count), Count is Count + 2.
+%solve(Head, Count) :- clause(Head, Body), solve(Body, Count), Count is Count + 1.
 
 web_lang(php).
 web_lang(python).
@@ -13,6 +13,7 @@ programmer(andrew, python).
 programmer(marie, pure_c).
 programmer(tommy, javascript).
 programmer(james, ruby).
+programmer(lexa, ruby).
 
 is_web_lang(L) :-
     web_lang(L).
